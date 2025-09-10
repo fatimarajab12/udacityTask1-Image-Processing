@@ -1,15 +1,15 @@
 {
   "compilerOptions": {
-    "target": "ES6",                   // إصدار JS النهائي
-    "module": "CommonJS",              // لتوافق مع Node وJasmine
-    "rootDir": "./src",                // مجلد ملفات TS
-    "outDir": "./dist",                // مجلد ملفات JS المترجمة
-    "strict": true,                    // تفعيل قواعد TypeScript الصارمة
-    "esModuleInterop": true,           // دعم الاستيراد من CommonJS
+    "target": "ES6",
+    "module": "CommonJS",
+    "rootDir": "./src",
+    "outDir": "./dist",
+    "strict": true,
+    "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
-    "skipLibCheck": true,              // تخطي التحقق من ملفات التعريف الخارجية
-    "sourceMap": true                  // لتسهيل تصحيح الأخطاء
+    "skipLibCheck": true,
+    "sourceMap": true
   },
-  "include": ["src/**/*.ts"],          // كل ملفات TS داخل src
-  "exclude": ["node_modules", "dist"]  // تجاهل هذه المجلدات
+  "include": ["src/**/*.ts", "tests/**/*.ts"],
+  "exclude": ["node_modules", "dist"]
 }

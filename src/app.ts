@@ -13,13 +13,4 @@ app.set('view engine', 'ejs');
 
 app.use(pageNotFound404);
 
-if (process.env.NODE_ENV !== 'test') {
-  app.listen(port, () => {
-    console.log(`Listening on port ${port}`);
-    console.log(
-      `Example API http://localhost:3000/api/images?filename=encenadaport&height=700&width=400`
-    );
-  });
-}
-
 export default app;
