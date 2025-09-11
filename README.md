@@ -1,90 +1,89 @@
-# image-processing-API
-An image processing API that resizes and saves images to user specifications when visiting a URL
+# Image Processing API
 
-Start coding by: Nhu Y Ho 
+A simple Express API that resizes images to user-specified dimensions and caches the results for faster subsequent access.
 
-- Clone this repo : https://github.com/nhuyho/image-processing-API.git;
-- Remove git remote
-- Add new git remote to new service repo
-- Update project name at (package.json, newrelic,...)
+---
 
-## Quick Start
+## 🚀 Quick Start
 
-1. Install dependencies:
+1. **Clone the repository**
+   ```bash
+   gh repo clone fatimarajab12/udacityTask1-Image-Processing
+   cd udacityTask1-Image-Processing
    ```
+
+2. **Install dependencies**
+   ```bash
    npm install
    ```
-2. Build the project:
-   ```
+
+3. **Build the project**
+   ```bash
    npm run build
    ```
-3. Start the server:
-   ```
+
+4. **Start the server**
+   ```bash
    npm start
    ```
-   The server will run on [http://localhost:3000](http://localhost:3000).
+   The server will run at [http://localhost:3000](http://localhost:3000).
 
-4. Access the image resizing endpoint in your browser or API tool:
-
+5. **Access the image resizing endpoint:**
    ```
    http://localhost:3000/api/images?filename=fjord&width=200&height=200
    ```
-
    - Replace `fjord` with the actual filename (without extension) of an image in your images folder.
    - The first request resizes and caches the image; subsequent requests serve the cached image.
 
 ---
 
-## Dependencies 
-
-To install the dependencies for this project, run the following command: 
-```
-npm install
-```
-
-## Build and run the server
-After installing the dependencies, run the following command to build typescript into javascript and save them in build folder:
-
-```
-npm run build
-```
-
-Start the Server:
-```
-npm start
-```
-This command will run the server  on port 3000. 
-
-## Testing
-```
-npm run test
-```
-
-## Image Resizing API
-
-### Endpoint
+## 🖼️ Image Resizing API
 
 **GET** `/api/images`
 
-#### Query Parameters:
-- `filename` (string, required): The name of the image file (without extension)
-- `width` (number, required): The desired width in pixels
-- `height` (number, required): The desired height in pixels
+### Query Parameters
+
+| Parameter | Type   | Required | Description                                 |
+|-----------|--------|----------|---------------------------------------------|
+| filename  | string | Yes      | Name of the image file (without extension)  |
+| width     | number | Yes      | Desired width in pixels                     |
+| height    | number | Yes      | Desired height in pixels                    |
 
 #### Example
-
-If you have an image named `fjord.jpg` in your images folder, you can resize it to 200x200 pixels with:
 
 ```
 http://localhost:3000/api/images?filename=fjord&width=200&height=200
 ```
 
-- The first request will resize and cache the image.
-- Subsequent requests with the same parameters will serve the cached image.
+---
 
-## References
+## 🧪 Testing
 
-1. [Node.js Documentation](https://nodejs.org/docs/latest-v12.x/api/). 
-2. [Express Documentation](https://expressjs.com/en/5x/api.html). 
-3. [Resize API](https://sharp.pixelplumbing.com/api-resize).
-4. [Jasmine Documentation](https://jasmine.github.io/).
+Run the test suite with:
+```bash
+npm run test
+```
+
+---
+
+## 🛠️ Scripts
+
+- `npm start` — Start the server
+- `npm run build` — Compile TypeScript to JavaScript
+- `npm run test` — Run all tests
+- `npm run lint` — Lint TypeScript files
+- `npm run format` — Format code with Prettier
+
+---
+
+## 📚 References
+
+- [Node.js Documentation](https://nodejs.org/docs/latest-v12.x/api/)
+- [Express Documentation](https://expressjs.com/en/5x/api.html)
+- [Sharp (Image Processing)](https://sharp.pixelplumbing.com/api-resize)
+- [Jasmine Documentation](https://jasmine.github.io/)
+
+---
+
+**Tip:**  
+Replace `fjord` in the example URL with the actual filename (without extension) of an image present in your `src/images` directory.
