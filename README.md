@@ -1,5 +1,10 @@
 # Image Processing API
 
+> **How to access the endpoint:**  
+> Start the server with `npm start`, then visit:  
+> `http://localhost:3000/api/images?filename=fjord&width=200&height=200`  
+> (Replace `fjord` with your image name.)
+
 A simple Express API that resizes images to user-specified dimensions and caches the results for faster subsequent access.
 
 ---
@@ -87,3 +92,18 @@ npm run test
 
 **Tip:**  
 Replace `fjord` in the example URL with the actual filename (without extension) of an image present in your `src/images` directory.
+
+---
+
+## Example for serving cached image
+return res.sendFile(thumbPath, (err) => {
+  if (err) {
+    res.status(500).send('Error sending image.');
+  }
+});
+
+## 🛠️ Troubleshooting
+
+- If you receive a 404 error, ensure the image filename exists in the `src/images` directory.
+- If you receive a 500 error, check that the `src/thumb` directory is writable and that your parameters are valid numbers.
+- All image serving uses absolute paths for reliability on all platforms.

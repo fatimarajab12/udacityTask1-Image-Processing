@@ -25,7 +25,11 @@ images.get('/', async (req, res) => {
 
   // Serve cached image if exists
   if (fs.existsSync(thumbPath)) {
-    return res.sendFile(thumbPath);
+    return res.sendFile(thumbPath, (err) => {
+      if (err) {
+        res.status(500).send('Error sending image.');
+      }
+    });
   }
 
   // Check if original image exists
