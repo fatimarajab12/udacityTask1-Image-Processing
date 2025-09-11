@@ -1,36 +1,46 @@
 import express from 'express';
 import path from 'path';
-import { resizeImage, resizeImagePath } from '../../utils/imageTransforms';
-import { promises as fsPromises } from 'fs';
 import fs from 'fs';
+import sharp from 'sharp';
 
 const images = express.Router();
 
-images.get('/', async (req: express.Request, res: express.Response) => {
+images.get('/', async (req, res) => {
+  const filename = req.query.filename as string;
+  const width = parseInt(req.query.width as string, 10);
+  const height = parseInt(req.query.height as string, 10);
+
+  if (!filename || isNaN(width) || isNaN(height)) {
+    return res.status(400).send('Missing or invalid parameters.');
+  }
+
+  const fullImagePath = path.resolve(__dirname, '../../images', `${filename}.jpg`);
+  const thumbDir = path.resolve(__dirname, '../../thumb');
+  const thumbPath = path.join(thumbDir, `${filename}_${width}x${height}.jpg`);
+
+  // Ensure thumb directory exists
+  if (!fs.existsSync(thumbDir)) {
+    fs.mkdirSync(thumbDir);
+  }
+
+  // Serve cached image if exists
+  if (fs.existsSync(thumbPath)) {
+    return res.sendFile(thumbPath);
+  }
+
+  // Check if original image exists
+  if (!fs.existsSync(fullImagePath)) {
+    return res.status(404).send('Original image not found.');
+  }
+
+  // Resize and cache
   try {
-    const filename = req.query.filename as string;
-    const height = parseInt(req.query.height as string, 10);
-    const width = parseInt(req.query.width as string, 10);
-
-    // التحقق من الباراميترز
-    if (!filename) {
-      return res.status(400).render('errors', { message: 'Missing filename parameter' });
-    }
-    if (isNaN(height) || isNaN(width) || height <= 0 || width <= 0) {
-      return res.status(400).render('errors', { message: 'Height and width must be positive numbers' });
-    }
-
-    const outputPath: string = resizeImagePath(filename, height, width);
-
-    // إذا الصورة ليست موجودة مسبقًا، نقوم بإنشائها
-    if (!fs.existsSync(outputPath)) {
-      const resizedImage: Buffer = await resizeImage(filename, height, width);
-      await fsPromises.writeFile(outputPath, new Uint8Array(resizedImage));
-    }
-
-    res.sendFile(path.resolve(outputPath));
-  } catch (err: any) {
-    res.status(500).render('errors', { message: err.message });
+    await sharp(fullImagePath)
+      .resize(width, height)
+      .toFile(thumbPath);
+    return res.sendFile(thumbPath);
+  } catch (err) {
+    return res.status(500).send('Error processing image.');
   }
 });
 

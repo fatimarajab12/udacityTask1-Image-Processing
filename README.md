@@ -8,6 +8,33 @@ Start coding by: Nhu Y Ho
 - Add new git remote to new service repo
 - Update project name at (package.json, newrelic,...)
 
+## Quick Start
+
+1. Install dependencies:
+   ```
+   npm install
+   ```
+2. Build the project:
+   ```
+   npm run build
+   ```
+3. Start the server:
+   ```
+   npm start
+   ```
+   The server will run on [http://localhost:3000](http://localhost:3000).
+
+4. Access the image resizing endpoint in your browser or API tool:
+
+   ```
+   http://localhost:3000/api/images?filename=fjord&width=200&height=200
+   ```
+
+   - Replace `fjord` with the actual filename (without extension) of an image in your images folder.
+   - The first request resizes and caches the image; subsequent requests serve the cached image.
+
+---
+
 ## Dependencies 
 
 To install the dependencies for this project, run the following command: 
@@ -24,26 +51,36 @@ npm run build
 
 Start the Server:
 ```
-npm run start
+npm start
 ```
 This command will run the server  on port 3000. 
 
 ## Testing
 ```
 npm run test
-
-## API Endpoints 
-
-This project an endpoint to resize image by user.
-
-
-
-HTTP method: GET. 
-
-#### Sample request:
 ```
-http://localhost:3000/api/images?filename=encenadaport&height=700&width=400
 
+## Image Resizing API
+
+### Endpoint
+
+**GET** `/api/images`
+
+#### Query Parameters:
+- `filename` (string, required): The name of the image file (without extension)
+- `width` (number, required): The desired width in pixels
+- `height` (number, required): The desired height in pixels
+
+#### Example
+
+If you have an image named `fjord.jpg` in your images folder, you can resize it to 200x200 pixels with:
+
+```
+http://localhost:3000/api/images?filename=fjord&width=200&height=200
+```
+
+- The first request will resize and cache the image.
+- Subsequent requests with the same parameters will serve the cached image.
 
 ## References
 
