@@ -7,16 +7,41 @@ const images = express.Router();
 
 images.get('/', async (req, res) => {
   const filename = req.query.filename as string;
-  const width = parseInt(req.query.width as string, 10);
-  const height = parseInt(req.query.height as string, 10);
+  const width = req.query.width;
+  const height = req.query.height;
 
-  if (!filename || isNaN(width) || isNaN(height)) {
-    return res.status(400).send('Missing or invalid parameters.');
+  // Validate filename
+  if (!filename) {
+    return res.status(400).send('Missing required parameter: filename');
+  }
+
+  // Validate width
+  const widthNum = Number(width);
+  if (
+    width === undefined ||
+    width === '' ||
+    isNaN(widthNum) ||
+    !isFinite(widthNum) ||
+    widthNum <= 0
+  ) {
+    return res.status(400).send('Width must be a positive number');
+  }
+
+  // Validate height
+  const heightNum = Number(height);
+  if (
+    height === undefined ||
+    height === '' ||
+    isNaN(heightNum) ||
+    !isFinite(heightNum) ||
+    heightNum <= 0
+  ) {
+    return res.status(400).send('Height must be a positive number');
   }
 
   const fullImagePath = path.resolve(__dirname, '../../images', `${filename}.jpg`);
   const thumbDir = path.resolve(__dirname, '../../thumb');
-  const thumbPath = path.join(thumbDir, `${filename}_${width}x${height}.jpg`);
+  const thumbPath = path.join(thumbDir, `${filename}_${widthNum}x${heightNum}.jpg`);
 
   // Ensure thumb directory exists
   if (!fs.existsSync(thumbDir)) {
@@ -27,7 +52,7 @@ images.get('/', async (req, res) => {
   if (fs.existsSync(thumbPath)) {
     return res.sendFile(thumbPath, (err) => {
       if (err) {
-        res.status(500).send('Error sending image.');
+        res.status(500).send('Error sending cached image.');
       }
     });
   }
@@ -40,9 +65,13 @@ images.get('/', async (req, res) => {
   // Resize and cache
   try {
     await sharp(fullImagePath)
-      .resize(width, height)
+      .resize(widthNum, heightNum)
       .toFile(thumbPath);
-    return res.sendFile(thumbPath);
+    return res.sendFile(thumbPath, (err) => {
+      if (err) {
+        res.status(500).send('Error sending resized image.');
+      }
+    });
   } catch (err) {
     return res.status(500).send('Error processing image.');
   }

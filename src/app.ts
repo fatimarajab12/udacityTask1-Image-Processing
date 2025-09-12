@@ -10,7 +10,6 @@ app.use('/api', routes);
 app.use('/public', express.static(path.join(__dirname, '../public')));
 app.set('views', path.join(__dirname, './views'));
 app.set('view engine', 'ejs');
-
 app.use(pageNotFound404);
 
 export default app;
